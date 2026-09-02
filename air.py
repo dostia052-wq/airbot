@@ -906,7 +906,8 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND & filters.ChatType.GROUPS, auto_reply_checker))
 
     print("ربات روشن شد و آماده به کار است...")
-    app.run_polling()
+    app.run_polling(drop_pending_updates=True)
+
 
 if __name__ == "__main__":
     main()
