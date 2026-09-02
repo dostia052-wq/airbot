@@ -218,6 +218,7 @@ async def track_groups(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print(f"DEBUG: Received message from user: {update.effective_user.id}")
     user_id = update.effective_user.id
     user_name = update.effective_user.first_name or "کاربر"
 
