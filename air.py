@@ -1,3 +1,6 @@
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+import os
 import logging
 import sqlite3
 from datetime import datetime, time
@@ -859,7 +862,19 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("لغو شد.")
     return ConversationHandler.END
 
-def main():
+class SimpleHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot is alive and running!")
+
+def run_web_server():
+    port = int(os.environ.get("PORT", 10000))
+    server = HTTPServer(("0.0.0.0", port), SimpleHandler)
+    server.serve_forever()
+
+def main():   
+    threading.Thread(target=run_web_server, daemon=True).start()
     req = HTTPXRequest(connect_timeout=30.0, read_timeout=30.0)
     app = Application.builder().token(BOT_TOKEN).request(req).build()
 
